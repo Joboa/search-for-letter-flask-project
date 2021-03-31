@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block body %}
+
+<h2 class="mt-4">{{ the_title }}</h2>
+
+<form action="/search4" method="POST">
+  <p>Use this form to submit a search request:</p>
+  <p><strong>HINT:</strong> Type any phrase and specify the letters to search for. 
+    Example: With the phrase, "the mangoes" and search for letters,
+    <strong>"exyi"</strong> in it, it returns <strong>{"e"}</strong> because 
+    <strong>"x,y, and i"</strong> cannot be found in the phrase
+  </p>
+  <div class="form-group">
+    <label for="formGroupExampleInput">
+      <strong>Phrase:</strong>
+    </label>
+    <input type="text" name="phrase" class="form-control" 
+    id="formGroupExampleInput" placeholder="Enter your phrase">
+  </div>
+  <br>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">
+      <strong>Letters (Specify the letters to search for such as "aeiou"):</strong>
+    </label>
+    <input type="text" name="letters" class="form-control" 
+    id="formGroupExampleInput2" value="aeiou">
+  </div>
+  <br>
+  <p>When you're ready, click the button below:</p>
+  <p><input class='btn btn-primary' type="submit" value="Do it" /></p>
+</form>
+
+{% endblock %}

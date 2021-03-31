@@ -1,0 +1,31 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* background: blue; */
+}
+
+body {
+  overflow: scroll;
+}
+
+.footer {
+  position: relative;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(190, 189, 189);
+  color: white;
+  text-align: center;
+}
+
+.results-spacing {
+  padding-left: 2rem !important;
+}
+
+.footer-items,
+.github-page {
+  color: #ffffff;
+  text-decoration: none;
+  list-style-type: none;
+}
