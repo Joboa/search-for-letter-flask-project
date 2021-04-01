@@ -1,6 +1,7 @@
 {% extends 'base.html' %} {% block body %}
 
-<h2 class="mt-4">{{ the_title }}</h2>
+<h2 class="mt-4 header-align">{{ the_title }}</h2>
+<a href="{{ url_for('view_the_log') }}"><input class='btn btn-primary' type="button" value="View log" /></a>
 
 <form action="/search4" method="POST">
   <p>Use this form to submit a search request:</p>
