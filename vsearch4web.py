@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request, escape
-from vsearch import search_for_letters
 
 app = Flask(__name__)
+
+
+def search_for_letters(phrase: str, letters: str = 'aeiou') -> set:
+    """Return a set of the 'letters' found in 'phrase'."""
+    return set(letters).intersection(set(phrase))
 
 
 def log_request(req: 'flask_request', res: str) -> None:
