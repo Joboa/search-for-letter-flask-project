@@ -24,10 +24,10 @@ def log_request(req: 'flask_request', res: str) -> None:
                 (%s, %s, %s, %s, %s)"""
 
         cursor.execute(_SQL, (req.form['phrase'],
-                          req.form['letters'],
-                          req.remote_addr,
-                          req.user_agent.browser,
-                          res, ))
+                              req.form['letters'],
+                              req.remote_addr,
+                              req.user_agent.browser,
+                              res, ))
 
 
 @app.route('/search4', methods=['POST'])
@@ -53,15 +53,14 @@ def entry_page() -> 'html':
 
 @app.route('/viewlog')
 def view_the_log() -> 'html':
-    """Reading data from the log file and saving it in
-    a container called contents"""
-    contents = []
-    with open('vsearch.log') as log:
-        for line in log:
-            contents.append([])
-            for item in line.split('|'):
-                contents[-1].append(escape(item))
-    titles = ('Form Data', 'Remote_addr',
+    """Display the contents of the log file as a HTML table."""
+    with UseDatabase(app.config['dbconfig']) as cursor:
+        _SQL = """select phrase, letters, ip, browser_string, results
+                from log"""
+        cursor.execute(_SQL)
+        contents = cursor.fetchall()
+
+    titles = ('Phrase', 'Letters', 'Remote_addr',
               'User_agent', 'Results')
     """Rendering the data using the temaplate, viewlog"""
     return render_template('viewlog.html',
