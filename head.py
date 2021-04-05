@@ -1,11 +1,17 @@
-def view_tasks():
-    all_task = []
-    with open('todos.txt') as tasks:
-        for task in tasks:
-            all_task.append([])
-            for item in task.split('|'):
-                all_task[-1].append(item)
-    print(str(all_task))
+class CountNum:
+    def __init__(self, v=0, i=1) -> None:
+        self.v = v
+        self.i = i
 
+    def count(self):
+        self.v += self.i
 
-view_tasks()
+    def __repr__(self) -> str:
+        return str(self.v)
+
+h = CountNum()
+print(h.i)
+print(h.v)
+print(h.count)
+# print(h.count())
+print(h.v)
