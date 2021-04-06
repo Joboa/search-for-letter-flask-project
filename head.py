@@ -1,17 +1,21 @@
-class CountNum:
-    def __init__(self, v=0, i=1) -> None:
-        self.v = v
-        self.i = i
+def myfunc(*args):
+    for a in args:
+        print(a, end='|')
 
-    def count(self):
-        self.v += self.i
+    if args:
+        print()
 
-    def __repr__(self) -> str:
-        return str(self.v)
+def myfunc2(**kwargs):
+    for k,v in kwargs.items():
+        print(k,v, sep='->', end='')
+    if kwargs:
+        print()
 
-h = CountNum()
-print(h.i)
-print(h.v)
-print(h.count)
-# print(h.count())
-print(h.v)
+student = {
+    'name':'John',
+    'sex': 'M',
+    'Level':'Graduate'
+}
+
+myfunc2(n='name',j='John')
+myfunc2(**student)
