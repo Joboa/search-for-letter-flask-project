@@ -1,7 +1,11 @@
-from flask import Flask, render_template, request, escape, session
+from flask import (Flask, render_template,
+                   request, escape, session,
+                   copy_current_request_context)
+from threading import Thread
 from DBcm import UseDatabase, ConnectionError, CredentialsError, SQLError
 from checker import check_logged_in
 from time import sleep
+
 
 app = Flask(__name__)
 
@@ -18,32 +22,34 @@ def search_for_letters(phrase: str, letters: str = 'aeiou') -> set:
     return set(letters).intersection(set(phrase))
 
 
-def log_request(req: 'flask_request', res: str) -> None:
-    """Log details of the web request and the results."""
-
-    # sleep(15)
-    with UseDatabase(app.config['dbconfig']) as cursor:
-        _SQL = """insert into log
-                (phrase, letters, ip, browser_string, results)
-                values
-                (%s, %s, %s, %s, %s)"""
-
-        cursor.execute(_SQL, (req.form['phrase'],
-                              req.form['letters'],
-                              req.remote_addr,
-                              req.user_agent.browser,
-                              res, ))
-
-
 @app.route('/search4', methods=['POST'])
 def do_search() -> str:
+
+    @copy_current_request_context
+    def log_request(req: 'flask_request', res: str) -> None:
+        """Log details of the web request and the results."""
+
+        sleep(15)  # This makes the log request very slow
+        with UseDatabase(app.config['dbconfig']) as cursor:
+            _SQL = """insert into log
+                    (phrase, letters, ip, browser_string, results)
+                    values
+                    (%s, %s, %s, %s, %s)"""
+
+            cursor.execute(_SQL, (req.form['phrase'],
+                                  req.form['letters'],
+                                  req.remote_addr,
+                                  req.user_agent.browser,
+                                  res, ))
+
     title = 'Here are your results'
     phrase = request.form['phrase']
     letters = request.form['letters']
     results = str(search_for_letters(phrase, letters))
 
     try:
-        log_request(request, results)
+        t = Thread(target=log_request, args=(request, results))
+        t.start()
     except Exception as err:
         print('Logging failed!', str(err))
 
