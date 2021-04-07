@@ -1,21 +1,25 @@
-def myfunc(*args):
-    for a in args:
-        print(a, end='|')
+import sys
 
-    if args:
-        print()
+try:
+    1/0
 
-def myfunc2(**kwargs):
-    for k,v in kwargs.items():
-        print(k,v, sep='->', end='')
-    if kwargs:
-        print()
+# except:
+#     err = sys.exc_info()
+#     for e in err:
+#         print(e)
 
-student = {
-    'name':'John',
-    'sex': 'M',
-    'Level':'Graduate'
-}
+except Exception as err:
+    print(str(err))
 
-myfunc2(n='name',j='John')
-myfunc2(**student)
+
+# try:
+#     with open('file.txt') as fh:
+#         file_data = fh.read()
+#     print(file_data)
+
+# # except FileNotFoundError:
+# #     print('file not found')
+# except PermissionError:
+#     print('not allowed')
+# except Exception as err:
+#     print('Some othe error occured', str(err))

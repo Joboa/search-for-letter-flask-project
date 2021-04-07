@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, escape, session
-from DBcm import UseDatabase
+from DBcm import UseDatabase, ConnectionError, CredentialsError, SQLError
 from checker import check_logged_in
+from time import sleep
 
 app = Flask(__name__)
 
@@ -20,6 +21,7 @@ def search_for_letters(phrase: str, letters: str = 'aeiou') -> set:
 def log_request(req: 'flask_request', res: str) -> None:
     """Log details of the web request and the results."""
 
+    # sleep(15)
     with UseDatabase(app.config['dbconfig']) as cursor:
         _SQL = """insert into log
                 (phrase, letters, ip, browser_string, results)
@@ -39,7 +41,12 @@ def do_search() -> str:
     phrase = request.form['phrase']
     letters = request.form['letters']
     results = str(search_for_letters(phrase, letters))
-    log_request(request, results)
+
+    try:
+        log_request(request, results)
+    except Exception as err:
+        print('Logging failed!', str(err))
+
     return render_template('results.html',
                            the_title=title,
                            the_phrase=phrase,
@@ -58,19 +65,29 @@ def entry_page() -> 'html':
 @check_logged_in
 def view_the_log() -> 'html':
     """Display the contents of the log file as a HTML table."""
-    with UseDatabase(app.config['dbconfig']) as cursor:
-        _SQL = """select phrase, letters, ip, browser_string, results
-                from log"""
-        cursor.execute(_SQL)
-        contents = cursor.fetchall()
+    try:
+        with UseDatabase(app.config['dbconfig']) as cursor:
+            _SQL = """select phrase, letters, ip, browser_string, results
+                    from log"""
+            cursor.execute(_SQL)
+            contents = cursor.fetchall()
 
-    titles = ('Phrase', 'Letters', 'Remote_addr',
-              'User_agent', 'Results')
-    """Rendering the data using the temaplate, viewlog"""
-    return render_template('viewlog.html',
-                           the_title='View Log',
-                           the_row_titles=titles,
-                           the_data=contents,)
+        titles = ('Phrase', 'Letters', 'Remote_addr',
+                  'User_agent', 'Results')
+        """Rendering the data using the temaplate, viewlog"""
+        return render_template('viewlog.html',
+                               the_title='View Log',
+                               the_row_titles=titles,
+                               the_data=contents,)
+    except ConnectionError as err:
+        print('Is your database switched on? Error:', str(err))
+    except SQLError as err:
+        print('Is your query correct? Error:', str(err))
+    except CredentialsError as err:
+        print('User-id/Password issues Error:', str(err))
+    except Exception as err:
+        print('Something went wrong', str(err))
+    return 'Error'
 
 
 @app.route('/login')
@@ -83,13 +100,6 @@ def do_login() -> str:
 def do_logout() -> str:
     session.pop('logged_in')
     return 'You are now logged out.'
-
-
-@app.route('/status')
-def check_status() -> str:
-    if 'logged_in' in session:
-        return 'You are currently logged in.'
-    return 'You are NOT logged in.'
 
 
 if __name__ == '__main__':
