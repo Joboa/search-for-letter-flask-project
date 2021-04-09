@@ -11,10 +11,10 @@ app = Flask(__name__)
 
 app.secret_key = 'EncryptedSecretKey'
 
-app.config['dbconfig'] = {'host': '127.0.0.1',
-                          'user': 'vsearch',
-                          'password': 'vsearchpasswd',
-                          'database': 'vsearchlogDB', }
+app.config['dbconfig'] = {'host': '',
+                          'user': '',
+                          'password': '',
+                          'database': '', }
 
 
 def search_for_letters(phrase: str, letters: str = 'aeiou') -> set:
