@@ -1,7 +1,6 @@
 from flask import (Flask, render_template,
                    request, escape, session,
-                   copy_current_request_context,
-                   redirect)
+                   copy_current_request_context,)
 from threading import Thread
 from DBcm import UseDatabase, ConnectionError, CredentialsError, SQLError
 from checker import check_logged_in
