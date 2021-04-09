@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div >
+  <p class="centre-me">Please you don't have access to this Page!</p>
+  <a class="centre-me" href="{{ url_for('entry_page') }}"><input class='btn btn-primary' type="button" value="Back to home" /></a>
+</div>
+
+{% endblock %}

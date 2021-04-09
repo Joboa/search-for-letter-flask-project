@@ -33,3 +33,11 @@ body {
 .header-align {
   text-align: center !important;
 }
+
+.centre-me {
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+  font-size: large;
+}
