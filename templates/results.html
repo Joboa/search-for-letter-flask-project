@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block body %}
+
+<h2 class="mt-2">{{ the_title }}</h2>
+
+<p>You submitted the following data:</p>
+<table class="list-group">
+  <tr class="list-group-item">
+    <td><strong>Phrase:</strong></td>
+    <td class="results-spacing" > {{ the_phrase }}</td>
+  </tr>
+  <tr class="list-group-item">
+    <td><strong>Letters:</strong></td>
+    <td class="results-spacing"> {{ the_letters }}</td>
+  </tr>
+</table>
+
+<div class="alert alert-secondary" role="alert">
+  <p>
+    When <strong>"{{ the_phrase }}"</strong> is searched for <strong>"{{ the_letters }}"</strong>, the following
+    results are returned
+  </p>
+  <hr>
+  <h3>{{ the_results }}</h3>
+</div>
+<br>
+
+<a href="{{ url_for('entry_page') }}"><input class='btn btn-primary' type="button" value="Back to search for more" /></a>
+
+{% endblock %}

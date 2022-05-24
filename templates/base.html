@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ the_title }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+  <link rel="shortcut icon" href="{{url_for('static', filename='browser_tab_icon.PNG')}}" type="image/x-icon">
+
+  <!-- {{ url_for('static', filename='style.css') }} -->
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='hf.css') }}"> -->
+  <!-- <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='hf.css') }}"> -->
+</head>
+
+<body>
+  <div class="container">
+    {% block body %}
+
+    {% endblock %}
+    <div class="footer">
+      <ul class="footer-items">
+        <li>@copyright: 2021</li>
+        <li><a class="github-page" href="https://github.com/Joboa" target="_blank">Joboa</a></li>
+        <li><a class="github-page" href="https://github.com/Joboa" target="_blank">GitHub</a></li>
+        <li>Powered by: Flask, Bootstrap and Head First Python</li>
+      </ul>
+    </div>
+  </div>
+</body>
+
+</html>
